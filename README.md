@@ -90,3 +90,5 @@ testing CSS selectors in Console: $$('selector')
 
 ## LEKCJA 4
 
+ctr+shift+r <-- tworzymy zmienną userId ze sztywnej wartości .fill(userId);
+alt + strzałka w górę <- przenosimy wyżej
