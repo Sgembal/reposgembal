@@ -2,6 +2,10 @@ import { expect, test } from '@playwright/test';
 
 test.describe('Pulpit test', async () => {
   //  Arrange
+  const transferAmount = '150';
+  const numberOption = '500 xxx xxx';
+  const expectedMessage = `Doładowanie wykonane! ${transferAmount},00PLN na numer ${numberOption}`;
+
   test.beforeEach(async ({ page }) => {
     const userPassword = '08987654321';
     const userId = 'testerHi';
@@ -11,15 +15,13 @@ test.describe('Pulpit test', async () => {
     await page.getByTestId('login-button').click();
   });
 
-  const reciverId = '2';
-  const transferAmount = '150';
-  const transferTitile = 'Zwrot środków';
-  const expectedTransferReciver = 'Chuck Demobankowy';
-  const numberOption = '500 xxx xxx';
-  const expectedMessage = `Doładowanie wykonane! ${transferAmount},00PLN na numer ${numberOption}`;
-
   // Act
   test('send money to someone', async ({ page }) => {
+    const reciverId = '2';
+
+    const transferTitile = 'Zwrot środków';
+    const expectedTransferReciver = 'Chuck Demobankowy';
+
     await page.locator('#widget_1_transfer_receiver').selectOption(reciverId);
     await page.locator('#widget_1_transfer_amount').fill(transferAmount);
     await page.locator('#widget_1_transfer_title').fill(transferTitile);
