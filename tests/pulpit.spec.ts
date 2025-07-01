@@ -10,6 +10,7 @@ test.describe('Pulpit test', async () => {
   const transferTitile = 'Zwrot środków';
   const expectedTransferReciver = 'Chuck Demobankowy';
   const numberOption = '500 xxx xxx';
+  const expectedMessage = `Doładowanie wykonane! ${transferAmount},0023PLN na numer ${numberOption}`;
 
   // Act
   test('send money to someone', async ({ page }) => {
@@ -43,7 +44,7 @@ test.describe('Pulpit test', async () => {
     await page.getByRole('button', { name: 'doładuj telefon' }).click();
     await page.getByTestId('close-button').click();
     await expect(page.getByTestId('message-text')).toHaveText(
-      'Doładowanie wykonane! ${transferAmount},0023PLN na numer ${numberOption}',
+      expectedMessage,
     );
     // albo za pomocą lokatora page.locator(#show_messages).toHaveText('Doładowanie wykonane! 12,00PLN na numer 500 xxx xxx')
   });
