@@ -4,23 +4,23 @@ test.describe('Pulpit test', async () => {
   //  Arrange
   test.beforeEach(async ({ page }) => {
     const url = 'https://demo-bank.vercel.app/';
+    const userPassword = '08987654321';
+    const userId = 'testerHi';
     await page.goto(url);
+    await page.getByTestId('login-input').fill(userId);
+    await page.getByTestId('password-input').fill(userPassword);
+    await page.getByTestId('login-button').click();
   });
 
-  const userPassword = '08987654321';
-  const userId = 'testerHi';
   const reciverId = '2';
   const transferAmount = '150';
   const transferTitile = 'Zwrot środków';
   const expectedTransferReciver = 'Chuck Demobankowy';
   const numberOption = '500 xxx xxx';
-  const expectedMessage = `Doładowanie wykonane! ${transferAmount},0023PLN na numer ${numberOption}`;
+  const expectedMessage = `Doładowanie wykonane! ${transferAmount},00PLN na numer ${numberOption}`;
 
   // Act
   test('send money to someone', async ({ page }) => {
-    await page.getByTestId('login-input').fill(userId);
-    await page.getByTestId('password-input').fill(userPassword);
-    await page.getByTestId('login-button').click();
     await page.locator('#widget_1_transfer_receiver').selectOption(reciverId);
     await page.locator('#widget_1_transfer_amount').fill(transferAmount);
     await page.locator('#widget_1_transfer_title').fill(transferTitile);
@@ -35,9 +35,6 @@ test.describe('Pulpit test', async () => {
   });
 
   test('sucessful mobile top-up', async ({ page }) => {
-    await page.getByTestId('login-input').fill(userId);
-    await page.getByTestId('password-input').fill(userPassword);
-    await page.getByTestId('login-button').click();
     await page.locator('#widget_1_topup_receiver').selectOption(numberOption);
     await page.locator('#widget_1_topup_amount').fill(transferAmount);
     await page.locator('#uniform-widget_1_topup_agreement span').click();
