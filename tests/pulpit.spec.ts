@@ -2,9 +2,6 @@ import { expect, test } from '@playwright/test';
 
 test.describe('Pulpit test', async () => {
   //  Arrange
-  const transferAmount = '150';
-  const numberOption = '500 xxx xxx';
-  const expectedMessage = `Doładowanie wykonane! ${transferAmount},00PLN na numer ${numberOption}`;
 
   test.beforeEach(async ({ page }) => {
     const userPassword = '08987654321';
@@ -18,9 +15,10 @@ test.describe('Pulpit test', async () => {
   // Act
   test('send money to someone', async ({ page }) => {
     const reciverId = '2';
-
     const transferTitile = 'Zwrot środków';
     const expectedTransferReciver = 'Chuck Demobankowy';
+    const transferAmount = '150';
+    const numberOption = '500 xxx xxx';
 
     await page.locator('#widget_1_transfer_receiver').selectOption(reciverId);
     await page.locator('#widget_1_transfer_amount').fill(transferAmount);
@@ -35,7 +33,29 @@ test.describe('Pulpit test', async () => {
     // await expect(page.getByTestId('message-text')).toHaveText('Przelew wykonany! Chuck Demobankowy - 150,00PLN - Zwrot środków');
   });
 
+  test('correct balance after sucessful mobile top-up', async ({ page }) => {
+    const transferAmount = '150';
+    const numberOption = '500 xxx xxx';
+    const expectedMessage = `Doładowanie wykonane! ${transferAmount},00PLN na numer ${numberOption}`;
+    const initialBalance = await page.locator('#money_value').innerText();
+    const expectedBalance = Number(initialBalance) - Number(transferAmount);
+
+    await page.locator('#widget_1_topup_receiver').selectOption(numberOption);
+    await page.locator('#widget_1_topup_amount').fill(transferAmount);
+    await page.locator('#uniform-widget_1_topup_agreement span').click();
+    await page.getByRole('button', { name: 'doładuj telefon' }).click();
+    await page.getByTestId('close-button').click();
+    
+    await expect(page.locator('#money_value')).toHaveText(`${expectedBalance}`); 
+    await expect(page.getByTestId('message-text')).toHaveText(expectedMessage); 
+    // albo za pomocą lokatora page.locator(#show_messages).toHaveText('Doładowanie wykonane! 12,00PLN na numer 500 xxx xxx')
+  });
+  
   test('sucessful mobile top-up', async ({ page }) => {
+    const transferAmount = '150';
+    const numberOption = '500 xxx xxx';
+    const expectedMessage = `Doładowanie wykonane! ${transferAmount},00PLN na numer ${numberOption}`;
+
     await page.locator('#widget_1_topup_receiver').selectOption(numberOption);
     await page.locator('#widget_1_topup_amount').fill(transferAmount);
     await page.locator('#uniform-widget_1_topup_agreement span').click();
