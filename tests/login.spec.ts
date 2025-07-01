@@ -6,8 +6,11 @@ test.describe('User login to demo bank', () => {
   const userPassword = '08987654321';
   const userId = 'testerHi';
   const expectedUsername = 'Jan Demobankowy';
+  const expectedMessageLogin = 'identyfikator ma min. 8 znaków';
+  const incorrectUserPassword = '1234';
+  const expectedMessagePassword = 'hasło ma min. 8 znaków';
 
-  test.only('sucesfully login with correct credential', async ({ page }) => {
+  test('sucesfully login with correct credential', async ({ page }) => {
     // Act
     await page.goto(url);
     await page.getByTestId('login-input').fill(userId);
@@ -20,22 +23,22 @@ test.describe('User login to demo bank', () => {
 
   test('unsucesfull login with to short username', async ({ page }) => {
     await page.goto(url);
-    await page.getByTestId('login-input').fill('tester');
+    await page.getByTestId('login-input').fill(userId);
     await page.getByTestId('password-input').click();
 
     await expect(page.getByTestId('error-login-id')).toHaveText(
-      'identyfikator ma min. 8 znaków',
+      expectedMessageLogin,
     );
   });
 
   test('unsucesfull login with to short password', async ({ page }) => {
     await page.goto(url);
-    await page.getByTestId('login-input').fill('testerHi');
-    await page.getByTestId('password-input').fill('1234');
+    await page.getByTestId('login-input').fill(userId);
+    await page.getByTestId('password-input').fill(incorrectUserPassword);
     await page.getByTestId('password-input').blur();
 
     await expect(page.getByTestId('error-login-password')).toHaveText(
-      'hasło ma min. 8 znaków',
+      expectedMessagePassword,
     );
   });
 });
