@@ -5,8 +5,7 @@ test.describe('User login to demo bank', () => {
 
   //hook -->
   test.beforeEach(async ({ page }) => {
-    const url = 'https://demo-bank.vercel.app/';
-    await page.goto(url);
+    await page.goto('/');
   });
 
   const userPassword = '08987654321';
@@ -17,7 +16,7 @@ test.describe('User login to demo bank', () => {
   const incorrectUserPassword = '1234';
   const expectedMessagePassword = 'hasło ma min. 8 znaków';
 
-  test('sucesfully login with correct credential', async ({ page }) => {
+  test.only('sucesfully login with correct credential', async ({ page }) => {
     // Act
     await page.getByTestId('login-input').fill(userId);
     await page.getByTestId('password-input').fill(userPassword);
