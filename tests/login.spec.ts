@@ -7,12 +7,6 @@ test.describe('User login to demo bank', () => {
     await page.goto('/');
   });
 
-  // Arrange
-  const expectedMessageLogin = 'identyfikator ma min. 8 znaków';
-  const incorrectUserId = 'log';
-  const incorrectUserPassword = '1234';
-  const expectedMessagePassword = 'hasło ma min. 8 znaków';
-
   test('sucesfully login with correct credential', async ({ page }) => {
     //Arrange
     const expectedUsername = 'Jan Demobankowy';
@@ -29,24 +23,28 @@ test.describe('User login to demo bank', () => {
   });
 
   test('unsucesfull login with to short username', async ({ page }) => {
-    await page.getByTestId('login-input').fill(incorrectUserId);
-    await page.getByTestId('password-input').click();
-
-    await expect(page.getByTestId('error-login-id')).toHaveText(
-      expectedMessageLogin,
-    );
+    //Arrange
+    const incorrectUserId = 'log';
+    const expectedMessageLogin = 'identyfikator ma min. 8 znaków';
+    //Act
+    const loginPage = new LoginPage(page);
+    await loginPage.loginInput.fill(incorrectUserId);
+    await loginPage.passwordInput.click();
+    //Assert
+    await expect(loginPage.loginError).toHaveText(expectedMessageLogin);
   });
 
   test('unsucesfull login with to short password', async ({ page }) => {
     //Arrange
     const userId = loginData.userId;
+    const incorrectUserPassword = '1234';
+    const expectedMessagePassword = 'hasło ma min. 8 znaków';
     //Act
-    await page.getByTestId('login-input').fill(userId);
-    await page.getByTestId('password-input').fill(incorrectUserPassword);
-    await page.getByTestId('password-input').blur();
-    // Assert
-    await expect(page.getByTestId('error-login-password')).toHaveText(
-      expectedMessagePassword,
-    );
+    const loginPage = new LoginPage(page);
+    await loginPage.loginInput.fill(userId);
+    await loginPage.passwordInput.fill(incorrectUserPassword);
+    await loginPage.passwordInput.blur();
+    //Assert
+    await expect(loginPage.passwordError).toHaveText(expectedMessagePassword);
   });
 });
