@@ -7,14 +7,15 @@
     "test": "npx playwright test",
     "test:headed": "npx playwright test --headed",
     "test:pulpit": "npm run test tests/pulpit.spec.ts",
-    "test:pulpit:headed": "npm run test tests/pulpit.spec.ts -- --headed"
+    "test:pulpit:headed": "npm run test tests/pulpit.spec.ts -- --headed",
+    "test:login": "npx playwright test --grep \"@login\""
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "type": "commonjs",
   "devDependencies": {
-    "@playwright/test": "^1.53.1",
+    "@playwright/test": "^1.53.2",
     "@types/node": "^24.0.3",
     "prettier": "3.6.2"
   }
