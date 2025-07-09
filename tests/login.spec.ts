@@ -2,7 +2,7 @@ import { test, expect } from '@playwright/test';
 import { loginData } from '../test-data/login.data';
 import { LoginPage } from '../pages/login.page';
 import { UserBuilder } from '../test-data/user.builder';
-
+//czy można tylko użyć git pull ?
 test.describe('User login to demo bank', () => {
   test.describe.configure({ retries: 3 });
   let loginPage: LoginPage;
