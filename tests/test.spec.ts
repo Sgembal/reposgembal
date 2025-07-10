@@ -17,6 +17,8 @@ test.describe('groupOfTest', async () => {
     await page.locator('.message').waitFor({ state: 'visible' });
     await page.locator('.spinner').waitFor({ state: 'detached' });
 
+    // ROBIE COMMITA Z TEST2
+
     // await expect(page.locator('#success')).toBeVisible();
     // await expect(page.locator('.spinner')).toBeHidden();
     // await expect(page.locator('.alert')).toHaveText('Zalogowano');
